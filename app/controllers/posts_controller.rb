@@ -1,26 +1,29 @@
 class PostsController < ApplicationController
+
   rescue_from Exception do |e|
-    #log.error "#{e.message}"  /// buena practica para notificar al equipo
-    render json: { error: e.message }, status: :internal_error
+    render json: {error: e.message}, status: :internal_error
   end
 
   rescue_from ActiveRecord::RecordInvalid do |e|
-    render json: { error: e.message }, status: :unprocessable_entity
+    render json: {error: e.message}, status: :unprocessable_entity
   end
 
-  # GET /post
+  # GET /posts
   def index
     @posts = Post.where(published: true)
-    render json: @posts, status: :ok
+    if !params[:search].nil? && params[:search].present?
+      @posts = PostsSearchService.search(@posts, params[:search])
+    end
+    render json: @posts.includes(:user), status: :ok
   end
 
-  # GET /post/{id}
+  # GET /posts/{id}
   def show
     @post = Post.find(params[:id])
     render json: @post, status: :ok
   end
 
-  # POST /post/{id}
+  # POST /posts
   def create
     @post = Post.create!(create_params)
     render json: @post, status: :created
