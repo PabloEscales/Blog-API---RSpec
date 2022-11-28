@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe "Posts", type: :request do
 
   describe "GET /posts" do
-    it "should return OK" do
+    it "Should return OK" do
       get '/posts'
       payload = JSON.parse(response.body)
       expect(payload).to be_empty
@@ -26,10 +26,10 @@ RSpec.describe "Posts", type: :request do
     # end
   end
 
-  describe "with data in the DB" do
+  describe "With data in the DB" do
     let!(:posts) { create_list(:post, 10, published: true) }
 
-    it "should return all the published posts" do
+    it "Should return all the published posts" do
       get '/posts'
       payload = JSON.parse(response.body)
       expect(payload.size).to eq(posts.size)
@@ -40,7 +40,7 @@ RSpec.describe "Posts", type: :request do
   describe "GET /post/{id}" do
     let!(:post) { create(:post) }
 
-    it "should return a post" do
+    it "Should return a post" do
       get "/posts/#{post.id}"
       payload = JSON.parse(response.body)
       expect(payload).to_not be_empty
@@ -58,7 +58,7 @@ RSpec.describe "Posts", type: :request do
   describe "POST /posts" do
     let!(:user) { create(:user) }
 
-    it "should create a post" do
+    it "Should create a post" do
       req_payload = {
         post: {
           title: "titulo",
@@ -75,7 +75,7 @@ RSpec.describe "Posts", type: :request do
       expect(response).to have_http_status(:created)
     end
 
-    it "should return error message on invalid post" do
+    it "Should return error message on invalid post" do
       req_payload = {
         post: {
           content: "content",
@@ -95,7 +95,7 @@ RSpec.describe "Posts", type: :request do
   describe "PUT /posts/{id}" do
     let!(:article) { create(:post) }
 
-    it "should create a post" do
+    it "Should create a post" do
       req_payload = {
         post: {
           title: "titulo",
@@ -111,7 +111,7 @@ RSpec.describe "Posts", type: :request do
       expect(response).to have_http_status(:ok)
     end
 
-    it "should return error message on invalid post" do
+    it "Should return error message on invalid post" do
       req_payload = {
         post: {
           title: nil,

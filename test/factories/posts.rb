@@ -19,5 +19,5 @@ FactoryBot.define do
     published { true }
     user
   end
-  
+
 end
